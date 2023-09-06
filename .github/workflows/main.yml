@@ -44,7 +44,7 @@ jobs:
           REPORT_NAME: YourReportName    # Replace with your report name
         run: |
           # Authenticate with Power BI CLI using Service Principal credentials
-          pbicli login --service-principal -p $POWER_BI_CLIENT_ID -s $POWER_BI_CLIENT_SECRET -t $POWER_BI_TENANT_ID
+          pbicli login --service-principal -p $POWER_BI_CLIENT_ID -s $POWER_BI_CLIENT_SECRET --tenant -t $POWER_BI_TENANT_ID
 
           # Publish or update the dataset and report
           pbicli import -w $POWER_BI_WORKSPACE_ID -f $PBIX_FILE_PATH -d $DATASET_NAME -r $REPORT_NAME --overwrite
