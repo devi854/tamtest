@@ -27,6 +27,8 @@ jobs:
         run: |
           #npm install -g powerbi-cli
           npm i -g @powerbi-cli/powerbi-cli
+          npm bin -g
+
 
       - name: List installed npm packages
         run: npm list -g --depth 0
