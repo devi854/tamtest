@@ -31,11 +31,6 @@ jobs:
       - name: List installed npm packages
         run: npm list -g --depth 0
 
-      - name: Verify Power BI CLI installation
-        run: |
-          pbicli --version 
-
-
       - name: Deploy PBIX to Power BI
         env:
           POWER_BI_CLIENT_ID: ${{ secrets.POWER_BI_CLIENT_ID }}
