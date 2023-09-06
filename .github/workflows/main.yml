@@ -33,8 +33,7 @@ jobs:
 
       - name: Verify Power BI CLI installation
         run: |
-          export PATH=$PATH:$(npm bin -g)
-          /usr/bin/bash -e -c 'pbicli --version'
+          pbicli --version 
 
 
       - name: Deploy PBIX to Power BI
