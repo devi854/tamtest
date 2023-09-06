@@ -29,7 +29,7 @@ jobs:
 
       - name: Verify Power BI CLI installation
         run: |
-          pbi --version  # This will print the Power BI CLI version
+          /usr/bin/bash -e -c 'pbi --version'  # This will print the Power BI CLI version
 
       - name: Deploy PBIX to Power BI
         env:
