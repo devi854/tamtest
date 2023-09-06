@@ -25,7 +25,8 @@ jobs:
 
       - name: Install Power BI CLI
         run: |
-          npm install -g powerbi-cli
+          #npm install -g powerbi-cli
+          npm i -g @powerbi-cli/powerbi-cli
 
       - name: List installed npm packages
         run: npm list -g --depth 0
@@ -33,7 +34,7 @@ jobs:
       - name: Verify Power BI CLI installation
         run: |
           export PATH=$PATH:$(npm bin -g)
-          /usr/bin/bash -e -c 'pbi --version'
+          /usr/bin/bash -e -c 'pbicli --version'
 
 
       - name: Deploy PBIX to Power BI
