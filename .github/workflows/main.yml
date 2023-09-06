@@ -1,11 +1,44 @@
-name: sample
+name: Power BI Deployment
+
 on:
   push:
     branches:
       - main
-jobs: 
+
+jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: checkout
-        uses: actions/checkot@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.x
+
+      - name: Install Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install Power BI CLI
+        run: |
+          npm install -g powerbi-cli
+
+      - name: Deploy PBIX to Power BI
+        env:
+          POWER_BI_CLIENT_ID: ${{ secrets.POWER_BI_CLIENT_ID }}
+          POWER_BI_CLIENT_SECRET: ${{ secrets.POWER_BI_CLIENT_SECRET }}
+          POWER_BI_TENANT_ID: ${{ secrets.POWER_BI_TENANT_ID }}
+          POWER_BI_WORKSPACE_ID: ${{ secrets.POWER_BI_WORKSPACE_ID }}
+          PBIX_FILE_PATH: ./path/to/your/report.pbix  # Replace with the actual path to your PBIX file
+          DATASET_NAME: YourDatasetName  # Replace with your dataset name
+          REPORT_NAME: YourReportName    # Replace with your report name
+        run: |
+          # Authenticate with Power BI CLI using Service Principal credentials
+          powerbi login -u $POWER_BI_CLIENT_ID -p $POWER_BI_CLIENT_SECRET -t $POWER_BI_TENANT_ID
+
+          # Publish or update the dataset and report
+          powerbi import -w $POWER_BI_WORKSPACE_ID -f $PBIX_FILE_PATH -d $DATASET_NAME -r $REPORT_NAME --overwrite
