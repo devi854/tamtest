@@ -1,4 +1,4 @@
-name: Deployment
+name: Power BI Deploy
 
 on:
   push:
@@ -10,25 +10,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v19
-        with:
-          separator: ","
-          quotepath: false
-      - name: Power BI Workspace Deploy
-        uses: nathangiusti/Power-BI-Workspace-Deploy@v1.2
-        with:
-          files: ${{ steps.changed-files.outputs.all_modified_files }}
-          separator: ","
-          tenant_id: "ede58b21-37a8-4b40-b1ed-3b62f51309af"
-          config_file: ".github/config/workspace-deploy-config.yaml"
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Power BI CLI
+        run: npm install -g powerbi-cli
+
+      - name: Deploy Power BI Reports
         env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          
-            
+          POWERBI_WORKSPACE_ID: ${{ secrets.POWERBI_WORKSPACE_ID }}
+          POWERBI_DATASET_NAME: reports
+          POWERBI_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          POWERBI_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          POWERBI_TENANT: ${{ secrets.POWERBI_TENANT }}
+        run: |
+          pbicli login -i $POWERBI_CLIENT_ID -s $POWERBI_CLIENT_SECRET -t $POWERBI_TENANT
+          pbicli import -w $POWERBI_WORKSPACE_ID -f reports/report.pbix -d "$POWERBI_DATASET_NAME"
+          pbicli logout
