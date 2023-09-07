@@ -27,3 +27,4 @@ jobs:
           pbicli login -i $POWERBI_CLIENT_ID -s $POWERBI_CLIENT_SECRET -t $POWERBI_TENANT
           pbicli import -w $POWERBI_WORKSPACE_ID -f reports/report.pbix -d "$POWERBI_DATASET_NAME"
           pbicli logout
+#njvklfenv
